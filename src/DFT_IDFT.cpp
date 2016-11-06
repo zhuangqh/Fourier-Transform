@@ -19,8 +19,8 @@ void print(const vector<complex<double> > &c) {
   }
 }
 
-void padding(string &str, int &padLen, vector<complex<double> > &A) {
-  int len = str.length();
+void padding(vector<double> &input, int &padLen, vector<complex<double> > &A) {
+  int len = input.size();
 
   padLen = 1;
   while (padLen < len) {
@@ -28,13 +28,13 @@ void padding(string &str, int &padLen, vector<complex<double> > &A) {
   }
 
   // 零补位
-  str.resize(padLen, '0');
+  input.resize(padLen, 0);
 
   // initialization
   A.reserve(padLen);
   for (int i = 0; i < padLen; ++i) {
     if (i < len) {
-      A.push_back(complex<double>(str[i] - '0', 0));
+      A.push_back(complex<double>(input[i], 0));
     } else {
       A.push_back(complex<double>());
     }
@@ -64,10 +64,10 @@ void rader(vector<complex<double> > &C) {
   }
 }
 
-vector<complex<double> > FFT(string &str, int op) {
+vector<complex<double> > FFT(vector<double> &input, int op) {
   vector<complex<double> > C;
   int padLen;
-  padding(str, padLen, C);
+  padding(input, padLen, C);
   rader(C);
 
   for (int T = 2; T <= padLen; T <<= 1) {
@@ -96,10 +96,17 @@ vector<complex<double> > FFT(string &str, int op) {
 }
 
 int main() {
-  string str;
+  vector<double> input;
   int type = 0;
-  while (cin >> str >> type) {
+  int len = 0;
+  while (cin >> len) {
+    double tmp;
+    while (len--) {
+      cin >> tmp;
+      input.push_back(tmp);
+    }
+    cin >> type;
     if (type != 0) type = 1;
-    print(FFT(str, type));
+    print(FFT(input, type));
   }
 }
