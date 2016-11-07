@@ -64,6 +64,8 @@ void rader(vector<complex<double> > &C) {
   }
 }
 
+// -1 DFT
+// 1 IDFT
 vector<complex<double> > FFT(vector<double> &input, int op) {
   vector<complex<double> > C;
   int padLen;
@@ -87,26 +89,26 @@ vector<complex<double> > FFT(vector<double> &input, int op) {
     }
   }
 
-  if (op == -1) {
+  if (op == 1) {
     for (int i = 0; i < padLen; ++i)
-      C[i].real(C[i].real() / padLen);
+      C[i] /= padLen;
   }
 
   return C;
 }
 
 int main() {
-  vector<double> input;
   int type = 0;
   int len = 0;
   while (cin >> len) {
     double tmp;
+    vector<double> input;
     while (len--) {
       cin >> tmp;
       input.push_back(tmp);
     }
     cin >> type;
-    if (type != 0) type = 1;
+    if (type != 1) type = -1;
     print(FFT(input, type));
   }
 }
