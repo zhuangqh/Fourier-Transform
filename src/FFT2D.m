@@ -1,4 +1,4 @@
-function destImg = fft2d( img, op )
+function destImg = fft2d( img, op, show )
 % op: 1 DFT
 % op: -1 IDFT
 
@@ -113,18 +113,24 @@ for y = 1:padWidth;
     end
 end
 
-% greater sight
-if op == -1;
-    imgShow = fftshift(destImg); % Center FFT
-else
-    imgShow = destImg;
+% return the real part
+if op == 1;
+    destImg = real(destImg);
 end
 
-imgShow = abs(imgShow); % Get the magnitude
-imgShow = log(imgShow+1); % Use log, for perceptual scaling, and +1 since log(0) is undefined
-imgShow = mat2gray(imgShow); % Use mat2gray to scale the image between 0 and 1
+% greater sight
+if show == 1;
+    if op == -1;
+        imgShow = fftshift(destImg); % Center FFT
+        imgShow = abs(imgShow); % Get the magnitude
+        imgShow = log(imgShow+1); % Use log, for perceptual scaling, and +1 since log(0) is undefined
+    else
+        imgShow = destImg;
+    end
 
-imgShow = uint8(imgShow*255);
-imshow(imgShow,[]); % Display the result
+    imgShow = mat2gray(imgShow); % Use mat2gray to scale the image between 0 and 1
+
+    imshow(imgShow,[]); % Display the result
+end
 
 end
