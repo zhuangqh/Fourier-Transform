@@ -1,5 +1,5 @@
 #include "./FFT_2D.hpp"
-#define _DEBUG_
+//#define _DEBUG_
 
 using std::vector;
 using std::string;
@@ -130,7 +130,7 @@ vector<vector<complex<double> > > FFT_2D::solve(vector<vector<double> > input, i
 
   for (int i = 0; i < padLenX; ++i) {
     helper(i, true);
-    print(A);
+    //print(A);
   }
 
 #ifdef _DEBUG_
@@ -139,7 +139,7 @@ vector<vector<complex<double> > > FFT_2D::solve(vector<vector<double> > input, i
 
   for (int j = 0; j < padLenY; ++j) {
     helper(j, false);
-    print(A);
+    //print(A);
   }
   return A;
 }
