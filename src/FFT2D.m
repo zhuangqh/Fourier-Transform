@@ -1,4 +1,4 @@
-function destImg = FFT2D( img, op )
+function destImg = fft2d( img, op )
 % op: 1 DFT
 % op: -1 IDFT
 
@@ -7,6 +7,7 @@ function destImg = FFT2D( img, op )
 padHeight = 2^nextpow2(height);
 padWidth = 2^nextpow2(width);
 
+img = double(img);
 % zero padding
 destImg = padarray(img, [padHeight - height, padWidth - width], 0, 'post');
 
@@ -57,9 +58,7 @@ for x = 1:padHeight;
     end
     
     if op == 1; % IDFT
-        for i = 1:padWidth;
-            destImg(x, i) = destImg(x, i) / padWidth;
-        end
+        destImg(x) = destImg(x) / padWidth;
     end
 end
 
@@ -108,12 +107,24 @@ for y = 1:padWidth;
         end
         T = T * 2;
     end
-    
+
     if op == 1; % IDFT
-        for i = 1:padHeight;
-            destImg(i, y) = destImg(i, y) / padHeight;
-        end
+        destImg(:, y) = destImg(:, y) / padHeight;
     end
 end
+
+% greater sight
+if op == -1;
+    imgShow = fftshift(destImg); % Center FFT
+else
+    imgShow = destImg;
+end
+
+imgShow = abs(imgShow); % Get the magnitude
+imgShow = log(imgShow+1); % Use log, for perceptual scaling, and +1 since log(0) is undefined
+imgShow = mat2gray(imgShow); % Use mat2gray to scale the image between 0 and 1
+
+imgShow = uint8(imgShow*255);
+imshow(imgShow,[]); % Display the result
 
 end
